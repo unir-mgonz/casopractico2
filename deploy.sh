@@ -58,4 +58,4 @@ kubectl apply -f k8s/app-contador.yaml
 echo "======================================================="
 echo "App desplegada en: https://$VM_FQDN"
 echo "Cluster AKS '$AKS' conectado (kubectl listo)."
-echo "Utilizar "kubectl get svc contador" para ver la ip publica asignada"
+echo "Utilizar "kubectl get svc contador" para ver la ip publica asignada. Se debe tener en cuenta que la aplicación corre en el puerto 8080"
