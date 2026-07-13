@@ -18,11 +18,14 @@ podman login $ACR \
 -u "$(terraform -chdir=$TERRAFORM_DIR output -raw acr_admin_username)" \
 -p "$(terraform -chdir=$TERRAFORM_DIR output -raw acr_admin_password)"
 
-# Construimos la imagen
+# Construimos las imagenes
 podman build --platform=linux/amd64 -t $ACR/casopractico2:apache ./podman-web-app
+podman build --platform=linux/amd64 -t $ACR/app-contador ./app-contador
+
 
 # Pusheamos la imagen al ACR
 podman push $ACR/casopractico2:apache
+podman push $ACR/app-contador
 
 # Configuramos la VM con Ansible.
 # Ansible se ejecuta en modo local en la propia VM, por lo que primero copiamos los ficheros necesarios usando scp.
@@ -47,7 +50,9 @@ az aks get-credentials --resource-group "$RG" --name "$AKS" --overwrite-existing
 
 # Comprobamos que el nodo esta listo
 kubectl get nodes
+kubectl apply -f k8s/app-contador.yaml
 
 echo "======================================================="
 echo "App desplegada en: https://$VM_FQDN"
 echo "Cluster AKS '$AKS' conectado (kubectl listo)."
+echo "Utilizar "kubectl get svc contador" para ver la ip publica asignada"
