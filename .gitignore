@@ -1,0 +1,42 @@
+# =============== Terraform ===============
+
+# tfstate
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+terraform.tfstate.d/
+
+# Directorio de trabajo
+.terraform/
+
+# Plans
+*.tfplan
+plan.out
+
+# Ficheros de variables
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+crash.log
+crash.*.log
+
+# =============== Ansible ===============
+
+# Inventario generado
+hosts.ini
+
+# Contiene las credenciales de administrador del ACR en texto plano.
+group_vars/all.yml
+
+*.retry
+
+# =============== Credenciales y claves ===============
+
+.env
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
