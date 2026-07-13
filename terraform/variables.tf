@@ -68,5 +68,26 @@ variable "certbot_email" {
 variable "certbot_staging" {
   description = "true = entorno de pruebas"
   type        = bool
-  default     = false
+  default     = true
+}
+
+
+# --- AKS ---------------------------------------------------------------------
+variable "aks_name" {
+  description = "Nombre del cluster AKS"
+  type        = string
+  default     = "cp2-aks-cluster"
+}
+
+# El FQDN del API server sera: <dns_prefix>-<hash>.hcp.<location>.azmk8s.io
+variable "aks_dns_prefix" {
+  description = "Prefijo DNS de AKS"
+  type        = string
+  default     = "cp2aks"
+}
+
+variable "aks_node_count" {
+  description = "Numero de nodos"
+  type        = number
+  default     = 1
 }

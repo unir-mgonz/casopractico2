@@ -25,6 +25,17 @@ output "acr_admin_password" {
   sensitive = true
 }
 
+# --- AKS ---------------------------------------------------------------------
+# Los usa deploy.sh para lanzar 'az aks get-credentials' sin nombres a mano.
+
+output "resource_group_name" {
+  value = azurerm_resource_group.rg.name
+}
+
+output "aks_name" {
+  value = azurerm_kubernetes_cluster.aks.name
+}
+
 # --- Generación automática del inventario de Ansible -------------------------
 resource "local_file" "ansible_inventory" {
   filename = "${path.module}/../hosts.ini"

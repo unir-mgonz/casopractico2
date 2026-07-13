@@ -117,7 +117,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   # Elegimos el sistema operativo: Ubuntu 26.04 LTS.
-  
+
   # Utilizamos el siguiente comando para ver las ofertas de sistema operativo en spaincentral:
   # > az vm image list-offers  --publisher Canonical --location westeurope --query '[].name' -o tsv
   # Y el siguiente comando para comprobar los skus:

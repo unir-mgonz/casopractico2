@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # Este script ejecutara los comandos necesarios para desplegar y configurar la infra. Se debe ejecutar desde la misma carpeta donde se encuentra el fichero.
 
 # Iniciamos y desplegamos infra con terraform.
@@ -38,5 +38,16 @@ ssh azureuser@$VM_FQDN '
   ansible-playbook -i localhost, -c local playbook.yml
 '
 
+# Configuramos el acceso al cluster AKS
+
+RG=$(terraform -chdir=$TERRAFORM_DIR output -raw resource_group_name)
+AKS=$(terraform -chdir=$TERRAFORM_DIR output -raw aks_name)
+
+az aks get-credentials --resource-group "$RG" --name "$AKS" --overwrite-existing
+
+# Comprobamos que el nodo esta listo
+kubectl get nodes
+
 echo "======================================================="
 echo "App desplegada en: https://$VM_FQDN"
+echo "Cluster AKS '$AKS' conectado (kubectl listo)."
