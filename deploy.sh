@@ -2,6 +2,9 @@
 set -e
 # Este script ejecutara los comandos necesarios para desplegar y configurar la infra. Se debe ejecutar desde la misma carpeta donde se encuentra el fichero.
 
+# INTERESANTE: Se recomienda configurar dentro de terraform/variables.tf las variables domain_name_label y certbot_staging .
+
+
 # Iniciamos y desplegamos infra con terraform.
 # Los ficheros .tf estan en la carpeta terraform/, se lo indicamos con -chdir.
 
@@ -48,7 +51,7 @@ AKS=$(terraform -chdir=$TERRAFORM_DIR output -raw aks_name)
 
 az aks get-credentials --resource-group "$RG" --name "$AKS" --overwrite-existing
 
-# Comprobamos que el nodo esta listo
+# Comprobamos que el nodo esta listo y desplegamos una aplicación.
 kubectl get nodes
 kubectl apply -f k8s/app-contador.yaml
 

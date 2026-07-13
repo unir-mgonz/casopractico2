@@ -54,7 +54,7 @@ variable "ssh_public_key_path" {
 variable "domain_name_label" {
   description = "Etiqueta para poder recibir FQDN con el formato <label>.<location>.cloudapp.azure.com"
   type        = string
-  default     = "podman-unir-mgonz"
+  default     = "podman-unir-mgonz2"
 }
 
 # --- Certbot -------------------------------------------------
@@ -68,7 +68,7 @@ variable "certbot_email" {
 variable "certbot_staging" {
   description = "true = entorno de pruebas"
   type        = bool
-  default     = true
+  default     = false
 }
 
 
