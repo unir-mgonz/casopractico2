@@ -23,7 +23,7 @@ variable "resource_group_name" {
 variable "acr_name" {
   description = "Nombre del ACR (único global, minúsculas y números)."
   type        = string
-  default     = "unir-mgonz-acr"
+  default     = "unirmgonzacr"
 }
 
 # --- VM ----------------------------------------------------------------------

@@ -5,6 +5,7 @@
 *.tfstate.*
 *.tfstate.backup
 terraform.tfstate.d/
+.terraform.lock.hcl
 
 # Directorio de trabajo
 .terraform/
