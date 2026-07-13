@@ -31,7 +31,7 @@ resource "local_file" "ansible_inventory" {
   content  = <<-EOT
     # Generado por Terraform — NO editar a mano.
     [podman_vm]
-    cp2demo-vm ansible_host=${azurerm_public_ip.vm_pip.ip_address}
+    ${var.vm_name} ansible_host=${azurerm_public_ip.vm_pip.ip_address}
 
     [podman_vm:vars]
     ansible_user=${var.vm_admin_username}
@@ -39,7 +39,7 @@ resource "local_file" "ansible_inventory" {
   EOT
 }
 
-# --- Generación automática de las variables del ACR (group_vars) -------------
+# --- Generación automática de las variables del despliegue (group_vars) ------
 
 resource "local_file" "ansible_acr_vars" {
   filename = "${path.module}/../group_vars/all.yml"
@@ -49,5 +49,10 @@ resource "local_file" "ansible_acr_vars" {
     acr_username: "${azurerm_container_registry.acr.admin_username}"
     acr_password: "${azurerm_container_registry.acr.admin_password}"
     image_tag: "casopractico2"
+
+    # SERVER_NAME del contenedor para solicitar certificado
+    vm_fqdn: "${azurerm_public_ip.vm_pip.fqdn}"
+    certbot_email: "${var.certbot_email}"
+    certbot_staging: ${var.certbot_staging}
   EOT
 }

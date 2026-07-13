@@ -56,3 +56,17 @@ variable "domain_name_label" {
   type        = string
   default     = "podman-unir-mgonz"
 }
+
+# --- Certbot -------------------------------------------------
+variable "certbot_email" {
+  description = "Correo de registro en Let's Encrypt"
+  type        = string
+  default     = "mauricio.gonzal5300@comunidadunir.net"
+}
+
+# Usamos un bool true/false para hacer pruebas sin que nos limite certbot. Se utiliza en podman-web-app/entrypoint.sh
+variable "certbot_staging" {
+  description = "true = entorno de pruebas"
+  type        = bool
+  default     = false
+}
