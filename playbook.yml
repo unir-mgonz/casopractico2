@@ -1,0 +1,59 @@
+# =============================================================================
+# playbook.yml - Caso Practico 2
+# =============================================================================
+---
+- name: Deploy web app podman
+  hosts: all
+  become: true
+  vars:
+    container_name: casopractico2
+    systemd_unit: "container-casopractico2.service"
+    image: "{{ acr_login_server }}/{{ image_tag }}:apache"
+
+  tasks:
+    - name: Instalar Podman
+      ansible.builtin.apt:
+        name: podman
+        state: present
+        update_cache: true
+
+    - name: Login en el ACR
+      containers.podman.podman_login:
+        registry: "{{ acr_login_server }}"
+        username: "{{ acr_username }}"
+        password: "{{ acr_password }}"
+
+    - name: Descargar la imagen desde el ACR
+      containers.podman.podman_image:
+        name: "{{ image }}"
+        pull: true
+
+    - name: Arrancar el contenedor y servicio systemd
+      containers.podman.podman_container:
+        name: "{{ container_name }}"
+        image: "{{ image }}"
+        state: started
+        ports:
+          - "80:80"
+          - "443:443"
+        volumes:
+          - "letsencrypt:/etc/letsencrypt" # Usamos un volumen para no generar certificados innecesariamente y llegar al limite semanal de 5 certificados para un fqdn.
+        env:
+          SERVER_NAME: "{{ vm_fqdn }}"
+          CERTBOT_EMAIL: "{{ certbot_email }}"
+          CERTBOT_STAGING: "{{ certbot_staging | string | lower }}" # En el entrypoint.sh de podman usamos true/false en minuscula para esta variable.
+        generate_systemd:
+          path: /etc/systemd/system
+          restart_policy: always
+          names: true
+          new: true
+
+    - name: Recargar systemd
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+
+    - name: Habilitar e iniciar el servicio (persistente a reinicios)
+      ansible.builtin.systemd_service:
+        name: "{{ systemd_unit }}"
+        enabled: true
+        state: started
